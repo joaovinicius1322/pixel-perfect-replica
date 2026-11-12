@@ -16,7 +16,13 @@ import { Route as ContatoRouteImport } from './routes/contato'
 import { Route as PrivacidadeRouteImport } from './routes/privacidade'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as TermosRouteImport } from './routes/termos'
+import { Route as AuthenticatedConfiguracoesRouteImport } from './routes/_authenticated/configuracoes'
+import { Route as AuthenticatedCurriculosRouteImport } from './routes/_authenticated/curriculos'
+import { Route as AuthenticatedNovaAnaliseRouteImport } from './routes/_authenticated/nova-analise'
 import { Route as AuthenticatedPainelRouteImport } from './routes/_authenticated/painel'
+import { Route as AuthenticatedAnalisesIndexRouteImport } from './routes/_authenticated/analises.index'
+import { Route as AuthenticatedAnalisesIdRouteImport } from './routes/_authenticated/analises.$id'
+import { Route as AuthenticatedAnalisesIdOtimizarRouteImport } from './routes/_authenticated/analises.$id_.otimizar'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -52,11 +58,45 @@ const TermosRoute = TermosRouteImport.update({
   path: '/termos',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedConfiguracoesRoute =
+  AuthenticatedConfiguracoesRouteImport.update({
+    id: '/configuracoes',
+    path: '/configuracoes',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedCurriculosRoute = AuthenticatedCurriculosRouteImport.update({
+  id: '/curriculos',
+  path: '/curriculos',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedNovaAnaliseRoute =
+  AuthenticatedNovaAnaliseRouteImport.update({
+    id: '/nova-analise',
+    path: '/nova-analise',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedPainelRoute = AuthenticatedPainelRouteImport.update({
   id: '/painel',
   path: '/painel',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedAnalisesIndexRoute =
+  AuthenticatedAnalisesIndexRouteImport.update({
+    id: '/analises/',
+    path: '/analises/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAnalisesIdRoute = AuthenticatedAnalisesIdRouteImport.update({
+  id: '/analises/$id',
+  path: '/analises/$id',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAnalisesIdOtimizarRoute =
+  AuthenticatedAnalisesIdOtimizarRouteImport.update({
+    id: '/analises/$id_/otimizar',
+    path: '/analises/$id/otimizar',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -65,7 +105,13 @@ export interface FileRoutesByFullPath {
   '/privacidade': typeof PrivacidadeRoute
   '/reset-password': typeof ResetPasswordRoute
   '/termos': typeof TermosRoute
+  '/configuracoes': typeof AuthenticatedConfiguracoesRoute
+  '/curriculos': typeof AuthenticatedCurriculosRoute
+  '/nova-analise': typeof AuthenticatedNovaAnaliseRoute
   '/painel': typeof AuthenticatedPainelRoute
+  '/analises/$id': typeof AuthenticatedAnalisesIdRoute
+  '/analises/': typeof AuthenticatedAnalisesIndexRoute
+  '/analises/$id/otimizar': typeof AuthenticatedAnalisesIdOtimizarRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -74,7 +120,13 @@ export interface FileRoutesByTo {
   '/privacidade': typeof PrivacidadeRoute
   '/reset-password': typeof ResetPasswordRoute
   '/termos': typeof TermosRoute
+  '/configuracoes': typeof AuthenticatedConfiguracoesRoute
+  '/curriculos': typeof AuthenticatedCurriculosRoute
+  '/nova-analise': typeof AuthenticatedNovaAnaliseRoute
   '/painel': typeof AuthenticatedPainelRoute
+  '/analises/$id': typeof AuthenticatedAnalisesIdRoute
+  '/analises': typeof AuthenticatedAnalisesIndexRoute
+  '/analises/$id/otimizar': typeof AuthenticatedAnalisesIdOtimizarRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -85,7 +137,13 @@ export interface FileRoutesById {
   '/privacidade': typeof PrivacidadeRoute
   '/reset-password': typeof ResetPasswordRoute
   '/termos': typeof TermosRoute
+  '/_authenticated/configuracoes': typeof AuthenticatedConfiguracoesRoute
+  '/_authenticated/curriculos': typeof AuthenticatedCurriculosRoute
+  '/_authenticated/nova-analise': typeof AuthenticatedNovaAnaliseRoute
   '/_authenticated/painel': typeof AuthenticatedPainelRoute
+  '/_authenticated/analises/$id': typeof AuthenticatedAnalisesIdRoute
+  '/_authenticated/analises/': typeof AuthenticatedAnalisesIndexRoute
+  '/_authenticated/analises/$id_/otimizar': typeof AuthenticatedAnalisesIdOtimizarRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -96,7 +154,13 @@ export interface FileRouteTypes {
     | '/privacidade'
     | '/reset-password'
     | '/termos'
+    | '/configuracoes'
+    | '/curriculos'
+    | '/nova-analise'
     | '/painel'
+    | '/analises/$id'
+    | '/analises/'
+    | '/analises/$id/otimizar'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -105,7 +169,13 @@ export interface FileRouteTypes {
     | '/privacidade'
     | '/reset-password'
     | '/termos'
+    | '/configuracoes'
+    | '/curriculos'
+    | '/nova-analise'
     | '/painel'
+    | '/analises/$id'
+    | '/analises'
+    | '/analises/$id/otimizar'
   id:
     | '__root__'
     | '/'
@@ -115,7 +185,13 @@ export interface FileRouteTypes {
     | '/privacidade'
     | '/reset-password'
     | '/termos'
+    | '/_authenticated/configuracoes'
+    | '/_authenticated/curriculos'
+    | '/_authenticated/nova-analise'
     | '/_authenticated/painel'
+    | '/_authenticated/analises/$id'
+    | '/_authenticated/analises/'
+    | '/_authenticated/analises/$id_/otimizar'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -179,6 +255,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TermosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/configuracoes': {
+      id: '/_authenticated/configuracoes'
+      path: '/configuracoes'
+      fullPath: '/configuracoes'
+      preLoaderRoute: typeof AuthenticatedConfiguracoesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/curriculos': {
+      id: '/_authenticated/curriculos'
+      path: '/curriculos'
+      fullPath: '/curriculos'
+      preLoaderRoute: typeof AuthenticatedCurriculosRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/nova-analise': {
+      id: '/_authenticated/nova-analise'
+      path: '/nova-analise'
+      fullPath: '/nova-analise'
+      preLoaderRoute: typeof AuthenticatedNovaAnaliseRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/painel': {
       id: '/_authenticated/painel'
       path: '/painel'
@@ -186,15 +283,48 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPainelRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/analises/': {
+      id: '/_authenticated/analises/'
+      path: '/analises'
+      fullPath: '/analises/'
+      preLoaderRoute: typeof AuthenticatedAnalisesIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/analises/$id': {
+      id: '/_authenticated/analises/$id'
+      path: '/analises/$id'
+      fullPath: '/analises/$id'
+      preLoaderRoute: typeof AuthenticatedAnalisesIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/analises/$id_/otimizar': {
+      id: '/_authenticated/analises/$id_/otimizar'
+      path: '/analises/$id/otimizar'
+      fullPath: '/analises/$id/otimizar'
+      preLoaderRoute: typeof AuthenticatedAnalisesIdOtimizarRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedConfiguracoesRoute: typeof AuthenticatedConfiguracoesRoute
+  AuthenticatedCurriculosRoute: typeof AuthenticatedCurriculosRoute
+  AuthenticatedNovaAnaliseRoute: typeof AuthenticatedNovaAnaliseRoute
   AuthenticatedPainelRoute: typeof AuthenticatedPainelRoute
+  AuthenticatedAnalisesIdRoute: typeof AuthenticatedAnalisesIdRoute
+  AuthenticatedAnalisesIndexRoute: typeof AuthenticatedAnalisesIndexRoute
+  AuthenticatedAnalisesIdOtimizarRoute: typeof AuthenticatedAnalisesIdOtimizarRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedConfiguracoesRoute: AuthenticatedConfiguracoesRoute,
+  AuthenticatedCurriculosRoute: AuthenticatedCurriculosRoute,
+  AuthenticatedNovaAnaliseRoute: AuthenticatedNovaAnaliseRoute,
   AuthenticatedPainelRoute: AuthenticatedPainelRoute,
+  AuthenticatedAnalisesIdRoute: AuthenticatedAnalisesIdRoute,
+  AuthenticatedAnalisesIndexRoute: AuthenticatedAnalisesIndexRoute,
+  AuthenticatedAnalisesIdOtimizarRoute: AuthenticatedAnalisesIdOtimizarRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =

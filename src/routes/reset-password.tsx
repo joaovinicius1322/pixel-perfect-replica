@@ -31,12 +31,21 @@ function ResetPassword() {
     e.preventDefault();
     const form = new FormData(e.currentTarget);
     const password = String(form.get("password"));
-    if (password.length < 8) return toast.error("Use pelo menos 8 caracteres.");
-    if (password !== String(form.get("confirm"))) return toast.error("As senhas não coincidem.");
+    if (password.length < 8) {
+      toast.error("Use pelo menos 8 caracteres.");
+      return;
+    }
+    if (password !== String(form.get("confirm"))) {
+      toast.error("As senhas não coincidem.");
+      return;
+    }
     setLoading(true);
     const { error } = await supabase.auth.updateUser({ password });
     setLoading(false);
-    if (error) return toast.error("O link expirou ou é inválido. Solicite um novo.");
+    if (error) {
+      toast.error("O link expirou ou é inválido. Solicite um novo.");
+      return;
+    }
     toast.success("Senha atualizada com sucesso.");
     navigate({ to: "/painel", replace: true });
   };

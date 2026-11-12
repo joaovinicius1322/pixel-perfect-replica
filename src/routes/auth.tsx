@@ -16,10 +16,12 @@ type Mode = "signin" | "signup";
 const REDIRECT_KEY = "matchcv:post-auth-redirect";
 
 export const Route = createFileRoute("/auth")({
-  validateSearch: (search: Record<string, unknown>): { redirect?: string; mode?: Mode } => ({
-    redirect: typeof search.redirect === "string" ? search.redirect : undefined,
-    mode: search.mode === "signup" ? "signup" : search.mode === "signin" ? "signin" : undefined,
-  }),
+  validateSearch: (search: Record<string, unknown>): { redirect?: string; mode?: Mode } => {
+    const out: { redirect?: string; mode?: Mode } = {};
+    if (typeof search["redirect"] === "string") out.redirect = search["redirect"];
+    if (search["mode"] === "signup" || search["mode"] === "signin") out.mode = search["mode"];
+    return out;
+  },
   head: () => ({
     meta: [
       { title: "Entrar ou criar conta — MatchCV AI" },
@@ -190,7 +192,10 @@ function SignUpForm() {
       },
     });
     setLoading(false);
-    if (error) return toast.error(translateAuthError(error.message));
+    if (error) {
+      toast.error(translateAuthError(error.message));
+      return;
+    }
     if (!data.session) setSentTo(email);
   };
   if (sentTo)
@@ -236,7 +241,10 @@ function ForgotPassword({ onBack }: { onBack: () => void }) {
       redirectTo: `${window.location.origin}/reset-password`,
     });
     setLoading(false);
-    if (error) return toast.error(translateAuthError(error.message));
+    if (error) {
+      toast.error(translateAuthError(error.message));
+      return;
+    }
     setSent(true);
   };
   return (
