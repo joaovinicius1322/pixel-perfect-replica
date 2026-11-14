@@ -28,3 +28,12 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Project rules (MatchCV AI)
+
+- AI calls live only in `src/lib/*.server.ts` (gateway helper + prompts) and are exposed through `src/lib/analysis.functions.ts` server functions with `requireSupabaseAuth`; why: keeps the API key and prompts server-side and every call user-scoped by RLS.
+- The ATS score is computed in `src/lib/scoring.ts` (keyword coverage matched in code + weighted AI sub-scores); the AI never returns the final score; why: scores must be deterministic and explainable, never random.
+- Resume text is extracted in the browser (`src/lib/resume-extract.ts`, pdfjs/mammoth loaded on demand) and stored in `resumes.extracted_text`; original files go to the private `resumes` bucket under `<user_id>/`; why: PDF/DOCX parsers are not Worker-safe.
+- Final resume = original text unless a suggestion is accepted or edited; keywords are added only when the user confirms them (`src/lib/optimization.ts`); why: integrity rule — never invent resume facts.
+- PDF export uses jsPDF single-column text in `src/lib/resume-pdf.ts`; why: ATS-readable output (no tables, columns, icons or graphics).
+- Signed-in pages live under `src/routes/_authenticated/` (client-only gate) and read data with the browser client via `src/lib/queries.ts` query options.
